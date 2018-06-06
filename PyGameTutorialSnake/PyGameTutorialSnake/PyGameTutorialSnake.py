@@ -73,7 +73,7 @@ def move_food():
     #foodY = random.randrange(0, display_height-food_size, food_size)
 
 
-class spritesheet:
+class spritesheet: #used the following link to create https://www.youtube.com/watch?v=mfX3XQv9lnI&t=499s 
 	def __init__(self, filename, cols, rows):
 		self.sheet = pygame.image.load(filename).convert_alpha()
 		
