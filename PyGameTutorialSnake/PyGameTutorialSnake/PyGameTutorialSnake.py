@@ -3,14 +3,14 @@ import random
 pygame.init()
 
 #setup display
-display_width = 800
-display_height = 600
+display_width, display_height = 800, 600
+
 fps=0
 gameDisplay = pygame.display.set_mode((display_width, display_height)) 
 pygame.display.set_caption("Snake") #sets the title of the game in the top of the bar
 #Setup clock and FPS
 clock = pygame.time.Clock()
-FPS = 5
+FPS = 1
 #Define Colors
 white = (255,255,255)
 black = (0,0,0)
@@ -71,7 +71,34 @@ def move_food():
     global foodY
     #foodX = random.randrange(0, display_width-food_size, food_size)
     #foodY = random.randrange(0, display_height-food_size, food_size)
-    
+
+
+class spritesheet:
+	def __init__(self, filename, cols, rows):
+		self.sheet = pygame.image.load(filename).convert_alpha()
+		
+		self.cols = cols
+		self.rows = rows
+		self.totalCellCount = cols * rows
+		
+		self.rect = self.sheet.get_rect()
+		w = self.cellWidth = int(self.rect.width / cols)
+		h = self.cellHeight = int(self.rect.height / rows)
+		hw, hh = self.cellCenter = (int(w / 2), int(h / 2))
+		
+		self.cells = list([(index % cols * w, int(index / cols) * h, w, h) for index in range(self.totalCellCount)])
+		self.handle = list([
+			(0, 0), (-hw, 0), (-w, 0),
+			(0, -hh), (-hw, -hh), (-w, -hh),
+			(0, -h), (-hw, -h), (-w, -h),])
+		
+	def draw(self, surface, cellIndex, x, y, handle = 0):
+		surface.blit(self.sheet, (x + self.handle[handle][0], y + self.handle[handle][1]), self.cells[cellIndex])
+
+s = spritesheet("Images/head.png", 4, 1)
+CENTER_HANDLE = 0
+
+index = 3
 
 
 gameInit()
@@ -137,6 +164,12 @@ while True:
 
     pygame.draw.rect(gameDisplay, food_color, (foodX ,foodY,food_size,food_size))
     #print (playerX, playerY, foodX, foodY)
+    
+    s.draw(gameDisplay, index % s.totalCellCount, 200, 200, 0) #draw (Display to blit to,Index number of image, locatation of X,Y,Offset 0=topleft)
+    index += 1
+    #s.draw.circle(gameDisplay, white, (HW, HH), 2, 0)
+        
+    
     pygame.display.update()
     fps = clock.get_fps()
     message_to_screen("hello",black)
