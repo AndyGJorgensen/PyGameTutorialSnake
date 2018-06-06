@@ -17,6 +17,7 @@ black = (0,0,0)
 bgcolor = (200,200,200)
 player_color = (46,221,35)
 food_color = (255,0,0)
+bg = pygame.image.load("Images/bg.jpg")
 #Define Player
 player_size = 20
 playerX = (display_width/2) - (player_size)
@@ -24,17 +25,15 @@ playerY = (display_height/2)- (player_size)
 food_size = player_size
 foodX=0
 foodY=0
-player_MovingXY = "NA"
+player_heading = "NA"
 playerY_speed = 0
 playerX_speed = 0
 
 def player(player_size, snakeList):
-    for XnY in snakeList:
-        pygame.draw.rect(gameDisplay, player_color, (XnY[0] ,XnY[1],player_size,player_size))
+    for XnYnI in snakeList:
+        snakesprite.draw(gameDisplay, XnYnI[2], XnYnI[0], XnYnI[1], 0)#draw (Display to blit to,Index number of image, locatation of X,Y,Offset 0=topleft)
 
 
-
-    #pygame.draw.rect(gameDisplay, player_color, (playerX ,playerY,player_size,player_size))
 
 
 
@@ -95,7 +94,7 @@ class spritesheet: #used the following link to create https://www.youtube.com/wa
 	def draw(self, surface, cellIndex, x, y, handle = 0):
 		surface.blit(self.sheet, (x + self.handle[handle][0], y + self.handle[handle][1]), self.cells[cellIndex])
 
-s = spritesheet("Images/head.png", 4, 1)
+snakesprite = spritesheet("Images/snake.png", 4, 3)
 CENTER_HANDLE = 0
 
 index = 3
@@ -111,45 +110,54 @@ while True:
 
             if event.key == pygame.K_ESCAPE :
                 gameExit()
-            if event.key == pygame.K_UP and not player_MovingXY == "Y":
+            if event.key == pygame.K_UP and not player_heading == "Y":
                 playerY_speed -= player_size
                 playerX_speed = 0
-                player_MovingXY = "Y"
-            if event.key == pygame.K_DOWN and not player_MovingXY == "Y":
+                player_heading = "Y"
+                index = 5
+            if event.key == pygame.K_DOWN and not player_heading == "Y":
                 playerY_speed += player_size
                 playerX_speed = 0
-                player_MovingXY = "Y"
-            if event.key == pygame.K_LEFT and not player_MovingXY == "X":
+                player_heading = "Y"
+                index = 5
+            if event.key == pygame.K_LEFT and not player_heading == "X":
                 playerX_speed -= player_size
                 playerY_speed = 0
-                player_MovingXY = "X"
-            if event.key == pygame.K_RIGHT and not player_MovingXY == "X":
+                player_heading = "X"
+                index = 4
+            if event.key == pygame.K_RIGHT and not player_heading == "X":
                 playerX_speed += player_size
                 playerY_speed = 0
-                player_MovingXY = "X"
+                player_heading = "X"
+                index = 4
             if event.key == pygame.K_SPACE:
                 move_food()
     playerX = playerX + playerX_speed
     playerY = playerY + playerY_speed      
     
+    #check for border collision
     if playerX < 0 or playerY < 0 or playerX > display_width - player_size or playerY > display_height - player_size:
         gameInit()
-        player_MovingXY = "NA"
+        player_heading = "NA"
         playerY_speed = 0
         playerX_speed = 0
 
+
+    #check for player and food collision
     if playerX == foodX and playerY == foodY:
         foodX = random.randrange(0, display_width-food_size, food_size)
         foodY = random.randrange(0, display_height-food_size, food_size)
         snakeLength += 1
     
     gameDisplay.fill((bgcolor))
+    gameDisplay.blit(bg, (0, 0))
 
 
     
     snakeHead = []
     snakeHead.append(playerX)
     snakeHead.append(playerY)
+    snakeHead.append(index)
     snakeList.append(snakeHead)
     player(player_size, snakeList)
     if len(snakeList) > snakeLength:
@@ -158,16 +166,19 @@ while True:
     for eachSegment in snakeList [:-1]:
         if eachSegment == snakeHead:
             gameInit()
-            player_MovingXY = "NA"
+            player_heading = "NA"
             playerY_speed = 0
             playerX_speed = 0
 
-    pygame.draw.rect(gameDisplay, food_color, (foodX ,foodY,food_size,food_size))
+    #pygame.draw.rect(gameDisplay, food_color, (foodX ,foodY,food_size,food_size))
+    snakesprite.draw(gameDisplay, 10, foodX, foodY, 0)#draw (Display to blit to,Index number of image, locatation of X,Y,Offset 0=topleft)
+
     #print (playerX, playerY, foodX, foodY)
     
-    s.draw(gameDisplay, index % s.totalCellCount, 200, 200, 0) #draw (Display to blit to,Index number of image, locatation of X,Y,Offset 0=topleft)
-    index += 1
-    #s.draw.circle(gameDisplay, white, (HW, HH), 2, 0)
+    #snakesprite.draw(gameDisplay, index % s.totalCellCount, 200, 200, 0) #draw (Display to blit to,Index number of image, locatation of X,Y,Offset 0=topleft)
+    #index += 1
+    #if index > 3 :
+    #    index=0
         
     
     pygame.display.update()
