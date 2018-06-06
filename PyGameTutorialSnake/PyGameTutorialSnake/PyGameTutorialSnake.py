@@ -3,7 +3,7 @@ import random
 pygame.init()
 
 #setup display
-display_width = 600
+display_width = 800
 display_height = 600
 fps=0
 gameDisplay = pygame.display.set_mode((display_width, display_height)) 
