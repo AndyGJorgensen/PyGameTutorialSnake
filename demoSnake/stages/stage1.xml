@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<stage>
+    <drop_count>10</drop_count>
+    <big_drop_count>1</big_drop_count>
+    <start_refresh>200</start_refresh>
+    <start_x>20</start_x>
+    <start_y>20</start_y>
+    <start_body_count>5</start_body_count>
+    <start_direction>down</start_direction>
+</stage>
