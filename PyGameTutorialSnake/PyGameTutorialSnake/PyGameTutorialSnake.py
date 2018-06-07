@@ -25,14 +25,13 @@ playerY = (display_height/2)- (player_size)
 food_size = player_size
 foodX=0
 foodY=0
-player_heading = "NA"
+player_heading = "UP"
 playerY_speed = 0
 playerX_speed = 0
 
 def player(player_size, snakeList):
     for XnYnI in snakeList:
         snakesprite.draw(gameDisplay, XnYnI[2], XnYnI[0], XnYnI[1], 0)#draw (Display to blit to,Index number of image, locatation of X,Y,Offset 0=topleft)
-
 
 
 
@@ -45,12 +44,18 @@ def gameInit():
     global playerY
     global snakeList
     global snakeLength
+    global lastindex
+    global lastplayer_heading
     snakeLength = 3
     foodX = random.randrange(0, display_width-food_size, food_size)
     foodY = random.randrange(0, display_height-food_size, food_size)
     playerX = (display_width/2) - (player_size)
     playerY = (display_height/2)- (player_size)
     snakeList = []
+    index = 1
+    lastindex = 1
+    lastplayer_heading = "UP"
+
 
 font = pygame.font.SysFont(None,25)
 def message_to_screen(msg,color):
@@ -110,35 +115,40 @@ while True:
 
             if event.key == pygame.K_ESCAPE :
                 gameExit()
-            if event.key == pygame.K_UP and not player_heading == "Y":
+            if event.key == pygame.K_UP and (player_heading == "LEFT" or player_heading == "RIGHT"):
                 playerY_speed -= player_size
                 playerX_speed = 0
-                player_heading = "Y"
+                player_heading = "UP"
                 index = 5
-            if event.key == pygame.K_DOWN and not player_heading == "Y":
+            if event.key == pygame.K_DOWN and (player_heading == "LEFT" or player_heading == "RIGHT"):
                 playerY_speed += player_size
                 playerX_speed = 0
-                player_heading = "Y"
+                player_heading = "DOWN"
                 index = 5
-            if event.key == pygame.K_LEFT and not player_heading == "X":
+            if event.key == pygame.K_LEFT and (player_heading == "UP" or player_heading == "DOWN"):
                 playerX_speed -= player_size
                 playerY_speed = 0
-                player_heading = "X"
+                player_heading = "LEFT"
                 index = 4
-            if event.key == pygame.K_RIGHT and not player_heading == "X":
+            if event.key == pygame.K_RIGHT and (player_heading == "UP" or player_heading == "DOWN"):
                 playerX_speed += player_size
                 playerY_speed = 0
-                player_heading = "X"
+                player_heading = "RIGHT"
                 index = 4
             if event.key == pygame.K_SPACE:
                 move_food()
+
+    
+  
+
+
     playerX = playerX + playerX_speed
     playerY = playerY + playerY_speed      
     
     #check for border collision
     if playerX < 0 or playerY < 0 or playerX > display_width - player_size or playerY > display_height - player_size:
         gameInit()
-        player_heading = "NA"
+        player_heading = "UP"
         playerY_speed = 0
         playerX_speed = 0
 
@@ -157,18 +167,29 @@ while True:
     snakeHead = []
     snakeHead.append(playerX)
     snakeHead.append(playerY)
-    snakeHead.append(index)
+    #snakeHead.append(index)
+
+    if player_heading == "UP" and lastplayer_heading == "RIGHT":
+        snakeHead.append(0)
+    else:
+        snakeHead.append(index)
+
     snakeList.append(snakeHead)
     player(player_size, snakeList)
     if len(snakeList) > snakeLength:
         del snakeList[0]
 
+    
+
     for eachSegment in snakeList [:-1]:
         if eachSegment == snakeHead:
             gameInit()
-            player_heading = "NA"
+            player_heading = "UP"
             playerY_speed = 0
             playerX_speed = 0
+
+    lastindex = index
+    lastplayer_heading = player_heading
 
     #pygame.draw.rect(gameDisplay, food_color, (foodX ,foodY,food_size,food_size))
     snakesprite.draw(gameDisplay, 10, foodX, foodY, 0)#draw (Display to blit to,Index number of image, locatation of X,Y,Offset 0=topleft)
