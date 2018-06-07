@@ -165,6 +165,7 @@ while True:
 
     
     snakeHead = []
+    snakeList.append(snakeHead)
     snakeHead.append(playerX)
     snakeHead.append(playerY)
     #snakeHead.append(index)
@@ -174,11 +175,11 @@ while True:
     else:
         snakeHead.append(index)
 
-    snakeList.append(snakeHead)
+    #snakeList.append(snakeHead)
     player(player_size, snakeList)
     if len(snakeList) > snakeLength:
         del snakeList[0]
-
+    print(snakeList)
     
 
     for eachSegment in snakeList [:-1]:
