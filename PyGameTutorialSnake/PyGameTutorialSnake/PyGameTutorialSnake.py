@@ -163,20 +163,79 @@ while True:
     gameDisplay.blit(bg, (0, 0))
 
 
-    
+    if player_heading == "UP" and lastplayer_heading == "RIGHT":
+        tempsnakeList=[]
+        tempsnakeList = snakeList[-1]
+        snakeList.pop(-1)
+        tempsnakeList.pop(-1)
+        tempsnakeList.append(0)
+        snakeList.append(tempsnakeList)
+
+    if player_heading == "UP" and lastplayer_heading == "LEFT":
+        tempsnakeList=[]
+        tempsnakeList = snakeList[-1]
+        snakeList.pop(-1)
+        tempsnakeList.pop(-1)
+        tempsnakeList.append(1)
+        snakeList.append(tempsnakeList)
+
+    if player_heading == "DOWN" and lastplayer_heading == "RIGHT":
+        tempsnakeList=[]
+        tempsnakeList = snakeList[-1]
+        snakeList.pop(-1)
+        tempsnakeList.pop(-1)
+        tempsnakeList.append(9)
+        snakeList.append(tempsnakeList)
+
+    if player_heading == "DOWN" and lastplayer_heading == "LEFT":
+        tempsnakeList=[]
+        tempsnakeList = snakeList[-1]
+        snakeList.pop(-1)
+        tempsnakeList.pop(-1)
+        tempsnakeList.append(8)
+        snakeList.append(tempsnakeList)
+
+    if player_heading == "RIGHT" and lastplayer_heading == "UP":
+        tempsnakeList=[]
+        tempsnakeList = snakeList[-1]
+        snakeList.pop(-1)
+        tempsnakeList.pop(-1)
+        tempsnakeList.append(8)
+        snakeList.append(tempsnakeList)
+
+    if player_heading == "RIGHT" and lastplayer_heading == "DOWN":
+        tempsnakeList=[]
+        tempsnakeList = snakeList[-1]
+        snakeList.pop(-1)
+        tempsnakeList.pop(-1)
+        tempsnakeList.append(1)
+        snakeList.append(tempsnakeList)
+
+    if player_heading == "LEFT" and lastplayer_heading == "UP":
+        tempsnakeList=[]
+        tempsnakeList = snakeList[-1]
+        snakeList.pop(-1)
+        tempsnakeList.pop(-1)
+        tempsnakeList.append(9)
+        snakeList.append(tempsnakeList)
+
+    if player_heading == "LEFT" and lastplayer_heading == "DOWN":
+        tempsnakeList=[]
+        tempsnakeList = snakeList[-1]
+        snakeList.pop(-1)
+        tempsnakeList.pop(-1)
+        tempsnakeList.append(0)
+        snakeList.append(tempsnakeList)
+
+
     snakeHead = []
-    snakeList.append(snakeHead)
     snakeHead.append(playerX)
     snakeHead.append(playerY)
-    #snakeHead.append(index)
-
-    if player_heading == "UP" and lastplayer_heading == "RIGHT":
-        snakeHead.append(0)
-    else:
-        snakeHead.append(index)
-
-    #snakeList.append(snakeHead)
+    snakeHead.append(index)
+    snakeList.append(snakeHead)
     player(player_size, snakeList)
+
+
     if len(snakeList) > snakeLength:
         del snakeList[0]
     print(snakeList)
