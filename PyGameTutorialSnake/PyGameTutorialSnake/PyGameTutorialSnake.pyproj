@@ -31,8 +31,10 @@
     <Content Include="Images\BG.jpg" />
     <Content Include="Images\body.png" />
     <Content Include="Images\head.png" />
+    <Content Include="Images\head2.png" />
     <Content Include="Images\images.jpg" />
     <Content Include="Images\snake.png" />
+    <Content Include="Images\snake2.png" />
     <Content Include="Images\tail.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

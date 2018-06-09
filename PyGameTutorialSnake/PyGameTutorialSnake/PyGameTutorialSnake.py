@@ -10,7 +10,7 @@ gameDisplay = pygame.display.set_mode((display_width, display_height))
 pygame.display.set_caption("Snake") #sets the title of the game in the top of the bar
 #Setup clock and FPS
 clock = pygame.time.Clock()
-FPS = 1
+FPS = 15
 #Define Colors
 white = (255,255,255)
 black = (0,0,0)
@@ -34,15 +34,22 @@ def player(player_size, snakeList):
         
     
     snakeHeadsprite.draw(gameDisplay, headindex, snakeList[-1][0], snakeList[-1][1], 0)#draw (Display to blit to,Index number of image, locatation of X,Y,Offset 0=topleft)
-    for XnYnI in snakeList[0:-1]:
-        snakesprite.draw(gameDisplay, XnYnI[2], XnYnI[0], XnYnI[1], 0)#draw (Display to blit to,Index number of image, locatation of X,Y,Offset 0=topleft)
+    for XnYnI in snakeList[1:-1]:
+        snakesprite.draw(gameDisplay, XnYnI[3], XnYnI[0], XnYnI[1], 0)#draw (Display to blit to,Index number of image, locatation of X,Y,Offset 0=topleft)
     
-        
-    #if (snakeList[0][2] == 5 or snakeList[0][2] == 8 or snakeList[0][2] == 9) and player_heading == "UP":
-        #snakesprite.draw(gameDisplay, 2, snakeList[0][0], snakeList[0][1], 0)#draw (Display to blit to,Index number of image, locatation of X,Y,Offset 0=topleft)
+    if len(snakeList) > 1:
 
+        if (snakeList[1][3] == 5 or snakeList[1][3] == 8 or snakeList[1][3] == 9) and snakeList[1][2] == "UP" :
+            snakesprite.draw(gameDisplay, 2, snakeList[0][0], snakeList[0][1], 0)#draw (Display to blit to,Index number of image, locatation of X,Y,Offset 0=topleft)
 
+        if (snakeList[1][3] == 5 or snakeList[1][3] == 0 or snakeList[1][3] == 1) and snakeList[1][2] == "DOWN" :
+            snakesprite.draw(gameDisplay, 6, snakeList[0][0], snakeList[0][1], 0)#draw (Display to blit to,Index number of image, locatation of X,Y,Offset 0=topleft)
 
+        if (snakeList[1][3] == 4 or snakeList[1][3] == 0 or snakeList[1][3] == 9) and snakeList[1][2] == "RIGHT" :
+            snakesprite.draw(gameDisplay, 3, snakeList[0][0], snakeList[0][1], 0)#draw (Display to blit to,Index number of image, locatation of X,Y,Offset 0=topleft)
+
+        if (snakeList[1][3] == 4 or snakeList[1][3] == 1 or snakeList[1][3] == 8) and snakeList[1][2] == "LEFT" :
+            snakesprite.draw(gameDisplay, 7, snakeList[0][0], snakeList[0][1], 0)#draw (Display to blit to,Index number of image, locatation of X,Y,Offset 0=topleft)
 
 
 #define initializing the game first run
@@ -243,13 +250,16 @@ while True:
         tempsnakeList.append(0)
         snakeList.append(tempsnakeList)
 
-
-    snakeHead = []
-    snakeHead.append(playerX)
-    snakeHead.append(playerY)
-    snakeHead.append(index)
-    snakeList.append(snakeHead)
+    if playerX_speed != 0 or playerY_speed != 0 or len(snakeList) ==0 :
+        snakeHead = []
+        snakeHead.append(playerX)
+        snakeHead.append(playerY)
+        snakeHead.append(player_heading)
+        snakeHead.append(index)
+        snakeList.append(snakeHead)
     #player(player_size, snakeList)
+
+
 
 
     if len(snakeList) > snakeLength:
