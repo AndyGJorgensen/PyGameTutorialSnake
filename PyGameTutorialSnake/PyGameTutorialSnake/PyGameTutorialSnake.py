@@ -28,10 +28,19 @@ foodY=0
 player_heading = "UP"
 playerY_speed = 0
 playerX_speed = 0
+headindex = 0
 
 def player(player_size, snakeList):
-    for XnYnI in snakeList:
+        
+    
+    snakeHeadsprite.draw(gameDisplay, headindex, snakeList[-1][0], snakeList[-1][1], 0)#draw (Display to blit to,Index number of image, locatation of X,Y,Offset 0=topleft)
+    for XnYnI in snakeList[0:-1]:
         snakesprite.draw(gameDisplay, XnYnI[2], XnYnI[0], XnYnI[1], 0)#draw (Display to blit to,Index number of image, locatation of X,Y,Offset 0=topleft)
+    
+        
+    #if (snakeList[0][2] == 5 or snakeList[0][2] == 8 or snakeList[0][2] == 9) and player_heading == "UP":
+        #snakesprite.draw(gameDisplay, 2, snakeList[0][0], snakeList[0][1], 0)#draw (Display to blit to,Index number of image, locatation of X,Y,Offset 0=topleft)
+
 
 
 
@@ -46,15 +55,19 @@ def gameInit():
     global snakeLength
     global lastindex
     global lastplayer_heading
+    global headindex
+    global index
     snakeLength = 3
     foodX = random.randrange(0, display_width-food_size, food_size)
     foodY = random.randrange(0, display_height-food_size, food_size)
     playerX = (display_width/2) - (player_size)
-    playerY = (display_height/2)- (player_size)
+    playerY = (display_height /2)- (player_size)
     snakeList = []
     index = 1
     lastindex = 1
     lastplayer_heading = "UP"
+    headindex=0
+    index = 2
 
 
 font = pygame.font.SysFont(None,25)
@@ -100,9 +113,8 @@ class spritesheet: #used the following link to create https://www.youtube.com/wa
 		surface.blit(self.sheet, (x + self.handle[handle][0], y + self.handle[handle][1]), self.cells[cellIndex])
 
 snakesprite = spritesheet("Images/snake.png", 4, 3)
-CENTER_HANDLE = 0
+snakeHeadsprite  = spritesheet("Images/head.png", 4, 1)
 
-index = 3
 
 
 gameInit()
@@ -120,21 +132,25 @@ while True:
                 playerX_speed = 0
                 player_heading = "UP"
                 index = 5
+                headindex = 0
             if event.key == pygame.K_DOWN and (player_heading == "LEFT" or player_heading == "RIGHT"):
                 playerY_speed += player_size
                 playerX_speed = 0
                 player_heading = "DOWN"
                 index = 5
+                headindex = 2
             if event.key == pygame.K_LEFT and (player_heading == "UP" or player_heading == "DOWN"):
                 playerX_speed -= player_size
                 playerY_speed = 0
                 player_heading = "LEFT"
                 index = 4
+                headindex = 3
             if event.key == pygame.K_RIGHT and (player_heading == "UP" or player_heading == "DOWN"):
                 playerX_speed += player_size
                 playerY_speed = 0
                 player_heading = "RIGHT"
                 index = 4
+                headindex = 1
             if event.key == pygame.K_SPACE:
                 move_food()
 
@@ -233,12 +249,14 @@ while True:
     snakeHead.append(playerY)
     snakeHead.append(index)
     snakeList.append(snakeHead)
-    player(player_size, snakeList)
+    #player(player_size, snakeList)
 
 
     if len(snakeList) > snakeLength:
         del snakeList[0]
     print(snakeList)
+
+    player(player_size, snakeList)
     
 
     for eachSegment in snakeList [:-1]:
