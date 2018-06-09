@@ -3,14 +3,14 @@ import random
 pygame.init()
 
 #setup display
-display_width, display_height = 800, 600
+display_width, display_height = 1280, 720
 
 fps=0
 gameDisplay = pygame.display.set_mode((display_width, display_height)) 
 pygame.display.set_caption("Snake") #sets the title of the game in the top of the bar
 #Setup clock and FPS
 clock = pygame.time.Clock()
-FPS = 15
+FPS = 3
 #Define Colors
 white = (255,255,255)
 black = (0,0,0)
@@ -25,7 +25,7 @@ playerY = (display_height/2)- (player_size)
 food_size = player_size
 foodX=0
 foodY=0
-player_heading = "UP"
+player_heading = "NA"
 playerY_speed = 0
 playerX_speed = 0
 headindex = 0
@@ -72,7 +72,7 @@ def gameInit():
     snakeList = []
     index = 1
     lastindex = 1
-    lastplayer_heading = "UP"
+    lastplayer_heading = "NA"
     headindex=0
     index = 2
 
@@ -134,25 +134,25 @@ while True:
 
             if event.key == pygame.K_ESCAPE :
                 gameExit()
-            if event.key == pygame.K_UP and (player_heading == "LEFT" or player_heading == "RIGHT"):
+            if event.key == pygame.K_UP and (player_heading == "LEFT" or player_heading == "RIGHT" or player_heading == "NA"):
                 playerY_speed -= player_size
                 playerX_speed = 0
                 player_heading = "UP"
                 index = 5
                 headindex = 0
-            if event.key == pygame.K_DOWN and (player_heading == "LEFT" or player_heading == "RIGHT"):
+            if event.key == pygame.K_DOWN and (player_heading == "LEFT" or player_heading == "RIGHT" or player_heading == "NA"):
                 playerY_speed += player_size
                 playerX_speed = 0
                 player_heading = "DOWN"
                 index = 5
                 headindex = 2
-            if event.key == pygame.K_LEFT and (player_heading == "UP" or player_heading == "DOWN"):
+            if event.key == pygame.K_LEFT and (player_heading == "UP" or player_heading == "DOWN" or player_heading == "NA"):
                 playerX_speed -= player_size
                 playerY_speed = 0
                 player_heading = "LEFT"
                 index = 4
                 headindex = 3
-            if event.key == pygame.K_RIGHT and (player_heading == "UP" or player_heading == "DOWN"):
+            if event.key == pygame.K_RIGHT and (player_heading == "UP" or player_heading == "DOWN" or player_heading == "NA"):
                 playerX_speed += player_size
                 playerY_speed = 0
                 player_heading = "RIGHT"
@@ -171,7 +171,7 @@ while True:
     #check for border collision
     if playerX < 0 or playerY < 0 or playerX > display_width - player_size or playerY > display_height - player_size:
         gameInit()
-        player_heading = "UP"
+        player_heading = "NA"
         playerY_speed = 0
         playerX_speed = 0
 
@@ -264,15 +264,14 @@ while True:
 
     if len(snakeList) > snakeLength:
         del snakeList[0]
-    print(snakeList)
 
     player(player_size, snakeList)
     
 
     for eachSegment in snakeList [:-1]:
-        if eachSegment == snakeHead:
+        if eachSegment[0] == snakeHead[0] and eachSegment [1] == snakeHead[1]:
             gameInit()
-            player_heading = "UP"
+            player_heading = "NA"
             playerY_speed = 0
             playerX_speed = 0
 
